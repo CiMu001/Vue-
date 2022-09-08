@@ -1,0 +1,105 @@
+[{
+    "id": 1,
+    "imgUrl": "/images/热卖1.jpg",
+    "goods": [{
+            "id": 10,
+            "BrandName": "安踏",
+            "price": "599",
+            "goodImgUrl": "/images/商品1.jpg",
+            "BrandImgUrl": "/images/品牌1.png"
+        },
+        {
+            "id": 11,
+            "BrandName": "大嘴猴",
+            "price": "199",
+            "goodImgUrl": "/images/商品2.jpg",
+            "BrandImgUrl": "/images/品牌2.png"
+        },
+        {
+            "id": 12,
+            "BrandName": "李宁",
+            "price": "299",
+            "goodImgUrl": "/images/商品3.jpg",
+            "BrandImgUrl": "/images/品牌3.png"
+        }
+    ]
+},
+{
+    "id": 2,
+    "imgUrl": "/images/热卖2.jpg",
+    "goods": [{
+            "id": 10,
+            "BrandName": "安踏",
+            "price": "599",
+            "goodImgUrl": "/images/商品1.jpg",
+            "BrandImgUrl": "/images/品牌1.png"
+        },
+        {
+            "id": 11,
+            "BrandName": "大嘴猴",
+            "price": "199",
+            "goodImgUrl": "/images/商品2.jpg",
+            "BrandImgUrl": "/images/品牌2.png"
+        },
+        {
+            "id": 12,
+            "BrandName": "李宁",
+            "price": "299",
+            "goodImgUrl": "/images/商品3.jpg",
+            "BrandImgUrl": "/images/品牌3.png"
+        }
+    ]
+},
+{
+    "id": 3,
+    "imgUrl": "/images/热卖3.jpg",
+    "goods": [{
+            "id": 10,
+            "BrandName": "安踏",
+            "price": "599",
+            "goodImgUrl": "/images/商品1.jpg",
+            "BrandImgUrl": "/images/品牌1.png"
+        },
+        {
+            "id": 11,
+            "BrandName": "大嘴猴",
+            "price": "199",
+            "goodImgUrl": "/images/商品2.jpg",
+            "BrandImgUrl": "/images/品牌2.png"
+        },
+        {
+            "id": 12,
+            "BrandName": "李宁",
+            "price": "299",
+            "goodImgUrl": "/images/商品3.jpg",
+            "BrandImgUrl": "/images/品牌3.png"
+        }
+    ]
+},
+{
+    "id": 4,
+    "imgUrl": "/images/热卖4.png",
+    "goods": [{
+            "id": 10,
+            "BrandName": "安踏",
+            "price": "599",
+            "goodImgUrl": "/images/商品1.jpg",
+            "BrandImgUrl": "/images/品牌1.png"
+        },
+        {
+            "id": 11,
+            "BrandName": "大嘴猴",
+            "price": "199",
+            "goodImgUrl": "/images/商品2.jpg",
+            "BrandImgUrl": "/images/品牌2.png"
+        },
+        {
+            "id": 12,
+            "BrandName": "李宁",
+            "price": "299",
+            "goodImgUrl": "/images/商品3.jpg",
+            "BrandImgUrl": "/images/品牌3.png"
+        }
+    ]
+}
+]

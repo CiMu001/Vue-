@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from '@/router'
 // 引入vuex
 import store from '@/store' 
+// 引入mock虚拟数据
+import '@/mock/mockServe'
 
 Vue.config.productionTip = false
 
