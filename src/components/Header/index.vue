@@ -28,7 +28,7 @@
             </div>
             <div class="searchBox">
                 <input v-model="searchInfo" />
-                <button @click="() => { $router.push({name: 'search', query: {q: searchInfo}}) }" class="pointer">搜索</button>
+                <button @click="goSearch" class="pointer">搜索</button>
             </div>
         </div>
         <!-- 分类导航 -->
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             showTypeNav: true,
-            searchInfo: '',
+            searchInfo: this.$route.params.keyword || '',
             navList: ['签到有礼','我的订单','我的特卖','会员俱乐部','客服服务','手机版', '更多'],
         }
     },
@@ -68,6 +68,16 @@ export default {
         logout() {
             this.$store.dispatch('userLogout')
             this.$router.push('/login')
+        },
+        goSearch() {
+            const { searchInfo } = this
+            const { query } = this.$route
+
+            this.$router.push({
+                name: 'search',
+                query,
+                params: { keyword: searchInfo},
+            })
         }
     }
     

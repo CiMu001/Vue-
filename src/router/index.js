@@ -42,7 +42,7 @@ let router =  new VueRouter({
         },
         {
             name: 'search',
-            path: "/search",
+            path: '/search/:keyword?',
             component: Search,
             props:($route) => ({ ...$route.params, ...$route.query, ...$route.meta })
         },

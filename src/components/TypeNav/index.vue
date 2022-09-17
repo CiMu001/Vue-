@@ -12,9 +12,9 @@
                     <div class="nav-lv3-box" v-show="isActivelv3 || isSelectedIndex">
                         <div class="lv3-item" v-for="item in lv3List" :key="item.categoryId">
                             <div class="lv3-title">{{item.categoryName}}</div>
-                            <div class="lv4-list">
+                            <div class="lv4-list" @click="jumpSearch">
                                 <div class="lv4-item" v-for="item in item.categoryChild" :key="item.categoryId">
-                                    <a class="pointer" @click="jumpSearch">{{item.categoryName}}</a>
+                                    <a class="pointer" :data-categoryId="item.categoryId">{{item.categoryName}}</a>
                                 </div>
                             </div>
                         </div>
@@ -76,9 +76,11 @@ export default {
           },
           jumpSearch(e) {
             const searchInfo = e.target.text
+            // const { categoryid } = e.target.dataset
+            const { params } = this.$route
 
             // 新页面跳转
-            let routeUrl = this.$router.resolve({name: 'search', query: {categoryName: searchInfo}})
+            let routeUrl = this.$router.resolve({name: 'search', query: {categoryName: searchInfo}, params})
             window.open(routeUrl.href, '_blank');
 
             // 本页面跳转

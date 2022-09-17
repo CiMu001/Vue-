@@ -1,5 +1,16 @@
 <template>
   <div class="search-container">
+    <el-breadcrumb separator-class="el-icon-arrow-right" class="search-info-box" v-if="breadcrumbList.length">
+      <el-breadcrumb-item>
+        <span>全部结果</span>
+      </el-breadcrumb-item>
+      <el-breadcrumb-item v-for="item in breadcrumbList" :key="item.id">
+        <span class="breadcrumb-item-info">
+          {{`${item.key}: ${item.val}`}}
+          <i class="el-icon-delete" style="margin-left: 10px; cursor: pointer;" @click="delFilterInfo(item.id)"></i>
+        </span>
+      </el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="c-filter">
       <div class='groups'>
         <!-- 品牌 -->
@@ -49,6 +60,7 @@
       </div>
       <h3 style="text-align: center" v-show="(pageNo===totalPages)">没有更多商品了...</h3>
     </div>
+    <div></div>
   </div>
 </template>
 
@@ -58,7 +70,7 @@ import { throttle } from 'lodash'
 
 export default {
   name: 'search',
-  props: ['q'],
+  props: ['keyword'],
   data(){
     return {
       filterInfo: {
@@ -68,40 +80,74 @@ export default {
       },
       pageNo: 1,
       pageSize: 20,
+      breadcrumbList: []
     }
   },
   mounted() {
+    this.pageNo = 1 
     this.getData()
-    this.scroll()
+    window.onscroll = throttle(()=>{
+      let goodBoxOffsetHeight = this.$refs.goodsBox.offsetHeight
+      let bottomOfBox = document.documentElement.scrollTop > goodBoxOffsetHeight + 846 - 969
+      
+      const { filterInfo, pageNo, pageSize, totalPages, keyword, breadcrumbList } = this
+      const { trademark, categoryName } = filterInfo
+      const propsArr = []
+      breadcrumbList.forEach(item => {
+        propsArr.push(`${item.id}:${item.val}:${item.key}`)
+      })
+      if(bottomOfBox && (pageNo < totalPages)) {
+        this.pageNo += 1 
+        this.$store.dispatch('getGoodsList', { props: propsArr, trademark, categoryName, pageNo, pageSize, keyword })
+      }
+    }, 500)
   },
   methods: {
     async getData() {
-      const { filterInfo, pageNo, pageSize, q } = this
-      const { props, trademark, categoryName } = filterInfo
-      const propsArr =  Object.values(props)
-      await this.$store.dispatch('getSearchInfo', { props: propsArr, trademark, categoryName, pageNo, pageSize, keywrod: q })
-    },
-    scroll() {
-      window.onscroll = throttle(()=>{
-        let goodBoxOffsetHeight = this.$refs.goodsBox.offsetHeight
-        let bottomOfBox = document.documentElement.scrollTop > goodBoxOffsetHeight + 846 - 969
-        
-        const { filterInfo, pageNo, pageSize, totalPages, q  } = this
-        const { props, trademark, categoryName } = filterInfo
-        const propsArr =  Object.values(props)
-        if(bottomOfBox && (pageNo < totalPages)) {
-          this.pageNo += 1 
-          this.$store.dispatch('getGoodsList', { props: propsArr, trademark, categoryName, pageNo, pageSize, keywrod: q })
-        }
-      }, 500)
+      const { filterInfo, pageSize, keyword, breadcrumbList } = this
+      const { trademark, categoryName } = filterInfo
+      const propsArr = []
+      breadcrumbList.forEach(item => {
+        if(item.key === '品牌') return
+        propsArr.push(`${item.id}:${item.val}:${item.key}`)
+      })
+      await this.$store.dispatch('getSearchInfo', { props: propsArr, trademark, categoryName, pageNo: 1, pageSize, keyword })
     },
     filterProps(propsId, attr, propsName){
       const { props } = this.filterInfo
       props[propsId] = `${propsId}:${attr}:${propsName}`
+      const propsObj = {
+        id: propsId,
+        key: propsName,
+        val: attr
+      }
+      const hasItem = this.breadcrumbList.some(item => item.id === propsObj.id)
+      if(!hasItem) {
+        this.breadcrumbList.push(propsObj)
+      }
       this.getData()
     },
     filterBrand(name, id) {
       this.filterInfo.trademark = `${id}:${name}`
+      const propsObj = {
+        id: id,
+        key: '品牌',
+        val: name
+      }
+      const hasItem = this.breadcrumbList.some(item => item.id === propsObj.id)
+      if(!hasItem) {
+        this.breadcrumbList.push(propsObj)
+      }
+      this.getData()
+    },
+    delFilterInfo(id) {
+      const { filterInfo } = this
+      this.breadcrumbList = this.breadcrumbList.filter(item => {
+        if(item.key === '品牌') {
+          filterInfo.trademark = ''
+        }
+        if(item.id !== id) return item
+      })
       this.getData()
     }
   },
@@ -112,7 +158,7 @@ export default {
     ...mapGetters(['goodsList', 'attrsList', 'trademarkList', 'totalPages'])
   },
   watch: {
-    $route(newVal, oldVal) {
+    $route() {
       this.getData()
     }
   }
@@ -252,4 +298,22 @@ export default {
   -webkit-line-clamp: 3;
   overflow: hidden;
 }
+
+.search-info-box {
+  margin: 18px 2px;
+}
+
+.breadcrumb-item-info {
+  padding: 2px 10px;
+  border: 1px solid #666;
+  border-radius: 5px;
+}
+
+.search-info-del-btn {
+  width: 10px;
+  text-align: center;
+  border: 0;
+  height: 4px;
+}
+
 </style>
