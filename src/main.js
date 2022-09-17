@@ -6,7 +6,15 @@ import router from '@/router'
 import store from '@/store' 
 // 引入mock虚拟数据
 import '@/mock/mockServe'
+import { Button, Form, FormItem, Input, Checkbox, Notification } from 'element-ui'; // 按需引入组件
 
+Vue.use(Button); // 注册全局组件
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Input);
+Vue.use(Checkbox);
+
+Vue.prototype.$notify = Notification;
 Vue.config.productionTip = false
 
 new Vue({

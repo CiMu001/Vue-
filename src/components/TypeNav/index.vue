@@ -78,7 +78,7 @@ export default {
             const searchInfo = e.target.text
 
             // 新页面跳转
-            let routeUrl = this.$router.resolve({name: 'search', query: {q: searchInfo}})
+            let routeUrl = this.$router.resolve({name: 'search', query: {categoryName: searchInfo}})
             window.open(routeUrl.href, '_blank');
 
             // 本页面跳转
@@ -104,6 +104,7 @@ export default {
     box-shadow: 2px 2px 3px 0 rgba(0,0,0, 0.1);
     width: 100%;
     z-index: 99;
+    animation: fixed-top 0.5s ease-in;
 }
 
 .outbox {
@@ -180,7 +181,7 @@ export default {
     left: 148px;
     top: 0;
     width: calc(100% - 148px);;
-    height: calc(447px);
+    height: calc(448.3px);
     padding: 10px 40px;
     color: #000;
     font-size: 12px;
@@ -223,6 +224,15 @@ export default {
 
 .pointer {
     cursor: pointer;
+}
+
+@keyframes fixed-top {
+    from{
+        transform: translateY(2px);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 </style>

@@ -27,7 +27,7 @@
         </div>
       </div>
       <!-- 商品展示 -->
-      <div class="good-box">
+      <div class="good-box" ref="goodBox">
         <div class="good-item" v-for="item in goodDataList" :key="item.id">
           <img :src="item.imgUrl" />
           <div class="title">
@@ -35,17 +35,25 @@
             <span style="margin-left: 6px">{{item.title}}</span>
           </div>
         </div>
-        <button class="more-data-btn">点击查看更多 >></button>
+        <button v-show="!isScroll" class="more-data-btn" @click="changScroll()">点击查看更多 >></button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { throttle } from 'lodash'
+
 export default {
+  data(){
+    return {
+      isScroll: false,
+    }
+  },
   mounted() {
     this.$store.dispatch('getHotSale')
     this.$store.dispatch('getGoods')
+    this.$store.dispatch('getUserInfo')
   },
   computed: {
     hotSaleDatas() {
@@ -53,6 +61,28 @@ export default {
     },
     goodDataList() {
       return this.$store.getters.goodDataList
+    },
+  },
+  methods: {
+    changScroll() {
+      this.isScroll = true
+      this.$store.dispatch('scrollGetGoods')
+      this.scroll()
+    },
+    scroll() {
+      window.onscroll = throttle(()=>{
+        let goodBoxOffsetHeight = this.$refs.goodBox.offsetHeight
+        // console.log({
+        //   '到达值': goodBoxOffsetHeight + 1450 - 969,
+        //   '滚动距离': document.documentElement.scrollTop, 
+        //   innerHeight: window.innerHeight,
+        // })
+        let bottomOfBox = document.documentElement.scrollTop > goodBoxOffsetHeight + 1450 - 969
+        
+        if(bottomOfBox) {
+          this.$store.dispatch('scrollGetGoods')
+        }
+      }, 50)
     }
   }
 }
@@ -181,7 +211,6 @@ export default {
   padding-bottom: 50px;
   margin-top: 15px;
   margin-bottom: 20px;
-  cursor: pointer;
   font-family: MicrosoftYaHei;
   font-weight: 700;
   font-size: 20px;
@@ -194,6 +223,7 @@ export default {
 .good-item {
   width: calc(49% - 2px);
   margin: 25px 0;
+  cursor: pointer;
 }
 
 .good-box img {
@@ -223,6 +253,10 @@ export default {
   font-weight: 400;
   display: inline-block;
   border: 0;
+}
+
+.more-data-btn:active {
+  outline: none;
 }
 
 

@@ -2,11 +2,13 @@ import Vue from "vue"
 import Vuex from 'vuex'
 import home from './home'
 import search from './search'
+import user from './user'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     modules: {
-        home, search
+        home, search, user
     }
 })
+export default store

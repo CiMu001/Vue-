@@ -1,6 +1,8 @@
 // 配置路由
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
+
 // 使用插件
 Vue.use(VueRouter)
 
@@ -31,7 +33,7 @@ VueRouter.prototype.originReplace = function(value, resolve, reject) {
 }
 
 // 配置路由
-export default new VueRouter({
+let router =  new VueRouter({
     routes: [
         {
             path: "/home",
@@ -68,3 +70,21 @@ export default new VueRouter({
 
     ]
 })
+
+router.beforeEach(async (to, from, next) => {
+    const { token, userInfo } = store.state.user
+    next()
+    if(token && (to.path =='/login' || to.path =='/register')) {
+        next('/')
+    } else if(token && !userInfo.nikeName){
+        try {
+            await store.dispatch('getUserInfo')
+        } catch(err) {
+            console.log('token失效')
+            store.dispatch('userLogout')
+        }
+        next()
+    }
+})
+
+export default router

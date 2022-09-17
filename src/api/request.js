@@ -1,4 +1,5 @@
 // axios 二次封装
+import store from "@/store"
 import axios from "axios"
 // 进度条
 import nProgress from "nprogress"
@@ -13,6 +14,9 @@ const requset = axios.create({
 // 请求拦截器
 requset.interceptors.request.use((config) => {
     nProgress.start()
+    if(store.state.user.token) {
+        config.headers.token = store.state.user.token
+    }
     return config
 })
 

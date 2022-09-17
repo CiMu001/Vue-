@@ -2,7 +2,8 @@
   <div id="app">
     <Header></Header>
     <router-view></router-view>
-    <Footer v-show="!$route.meta.hiddenFooter"></Footer>
+    <!-- v-show="!$route.meta.hiddenFooter"  -->
+    <Footer></Footer>
   </div>
 </template>
 
